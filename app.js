@@ -53,6 +53,25 @@ function ViewVer(res) {
     res.write(results[0].ver);
 }
 
+function JoinTables(res) {
+    const query = 'SELECT * FROM Table1 INNER JOIN Table2 ON Table1.id = Table2.table1_id';
+    const results = connection.query(query);
+
+    res.write('<tr>');
+    for (let key in results[0]) {
+        res.write('<th>' + key + '</th>');
+    }
+    res.write('</tr>');
+
+    for (let row of results) {
+        res.write('<tr>');
+        for (let key in row) {
+            res.write('<td>' + row[key] + '</td>');
+        }
+        res.write('</tr>');
+    }
+}
+
 const server = http.createServer((req, res) => {
     reqPost(req, res);
     console.log('Loading...');
@@ -63,9 +82,10 @@ const server = http.createServer((req, res) => {
     const array = fs.readFileSync(filePath).toString().split("\n");
     console.log(filePath);
     for (let i in array) {
-        if ((array[i].trim() != '@tr') && (array[i].trim() != '@ver')) res.write(array[i]);
+        if ((array[i].trim() != '@tr') && (array[i].trim() != '@ver') && (array[i].trim() != '@join')) res.write(array[i]);
         if (array[i].trim() == '@tr') ViewSelect(res);
         if (array[i].trim() == '@ver') ViewVer(res);
+        if (array[i].trim() == '@join') JoinTables(res);
     }
     res.end();
     console.log('1 User Done.');
