@@ -54,16 +54,16 @@ function ViewVer(res) {
 }
 
 function JoinTables(res) {
-    const query = 'SELECT * FROM Table1 INNER JOIN Table2 ON Table1.id = Table2.table1_id';
+    const query = 'CALL JoinTables()';
     const results = connection.query(query);
 
     res.write('<tr>');
-    for (let key in results[0]) {
+    for (let key in results[0][0]) {  
         res.write('<th>' + key + '</th>');
     }
     res.write('</tr>');
 
-    for (let row of results) {
+    for (let row of results[0]) {  // Iterate over the rows
         res.write('<tr>');
         for (let key in row) {
             res.write('<td>' + row[key] + '</td>');
