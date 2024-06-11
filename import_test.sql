@@ -62,7 +62,8 @@ BEGIN
     WHERE table_name='Sector' AND table_schema='ObservatoryDB' AND column_name='date_update';
     
     IF column_exists = 0 THEN
-        ALTER TABLE Sector ADD COLUMN date_update TIMESTAMP;
+        #ALTER TABLE Sector ADD COLUMN date_update TIMESTAMP;#
+
     END IF;
     
     UPDATE Sector SET date_update = NOW() WHERE id = NEW.id;
